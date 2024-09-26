@@ -18,6 +18,11 @@ const config = {
     }
 };
 
+// Define a root route
+app.get('/', (req, res) => {
+    res.send('Welcome to the API!'); // You can customize this message
+});
+
 app.post('/log', async (req, res) => {
     try {
         const { latitude, longitude, userAgent, screenWidth, screenHeight } = req.body;
@@ -32,7 +37,7 @@ app.post('/log', async (req, res) => {
             .input('UserAgent', sql.NVarChar(255), userAgent)
             .input('ScreenWidth', sql.Int, screenWidth)
             .input('ScreenHeight', sql.Int, screenHeight)
-            .input('GoogleMapsLink', sql.NVarChar(255), googleMapsLink) // Add Google Maps link as input
+            .input('GoogleMapsLink', sql.NVarChar(255), googleMapsLink)
             .query(`
                 INSERT INTO UserLocations (Latitude, Longitude, UserAgent, ScreenWidth, ScreenHeight, GoogleMapsLink) 
                 VALUES (@Latitude, @Longitude, @UserAgent, @ScreenWidth, @ScreenHeight, @GoogleMapsLink)
@@ -40,7 +45,7 @@ app.post('/log', async (req, res) => {
 
         res.status(200).send({ 
             message: 'Data logged successfully', 
-            googleMapsLink // Send the generated link back in the response
+            googleMapsLink 
         });
     } catch (err) {
         console.error('Error logging data:', err);
